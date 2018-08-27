@@ -2,7 +2,7 @@
 
 This application was created using `Node.js`.
 
-### `Running The Application`
+### Running The Application
 
 First install the packages and node modules:
 
@@ -18,7 +18,7 @@ cat sample-input.txt | node soccerLeague.js
 node soccerLeague.js < sample-input.txt
 ```
 
-### `Testing`
+### Testing
 
 I have used `Jest` to test my functions. To test the application run the following commands in your terminal:
 
