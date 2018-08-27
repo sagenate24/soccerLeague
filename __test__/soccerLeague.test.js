@@ -131,6 +131,33 @@ const expectedOutPutMock = [
   '',
 ];
 
+const matchResultsAndRankMock = {
+  Lions: {
+    points: 5,
+    rank: 2,
+  },
+  Snakes: {
+    points: 1,
+    rank: 3,
+  },
+  Tarantulas: {
+    points: 6,
+    rank: 1,
+  },
+  'FC Awesome': {
+    points: 1,
+    rank: 3,
+  },
+  Grouches: {
+    points: 0,
+    rank: 5,
+  },
+};
+
+it('should add a ranking property to matchResults', () => {
+  expect(soccerTest.createRank(matchResultsMock, sortedTeamListMock)).toEqual(matchResultsAndRankMock);
+});
+
 it('should return the the correct output format', () => {
-  expect(soccerTest.formatOutput(matchResultsMock, sortedTeamListMock)).toEqual(expectedOutPutMock.join('\n'));
+  expect(soccerTest.formatOutput(matchResultsAndRankMock, sortedTeamListMock)).toEqual(expectedOutPutMock.join('\n'));
 });

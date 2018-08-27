@@ -1,7 +1,6 @@
 // Commands to run the program.
 // pipe - cat sample-input.txt | node soccerLeague.js
 // redirect - node soccerLeague.js < sample-input.txt
-// Testing npx jest --watchAll
 
 process.stdin.on('data', (data) => {
   logExpectedOutPut(data.toString().split('\n'));
@@ -47,11 +46,12 @@ const logExpectedOutPut = (data) => {
     };
   });
 
-  const teamListSortedByScore = sortResults(matchResults);
-  const rankingTable = formatOutput(matchResults, teamListSortedByScore);
+  const sortedTeamList = sortResults(matchResults);
+  const matchResultsAndRank = createRank(matchResults, sortedTeamList);
+  const endRankingTable = formatOutput(matchResultsAndRank, sortedTeamList);
 
   // Logs the expected output.
-  console.log(rankingTable);
+  console.log(endRankingTable);
 };
 
 // Returns an array of team names
@@ -70,7 +70,6 @@ const getTotalTeamPoints = (teamName, leagueMatches) => {
 
   leagueMatches.forEach((match) => {
     const winnerOrTie = retrieveWinnerOrTie(match, teamName);
-
     if (winnerOrTie === teamName) {
       score += 3;
     } else if (winnerOrTie === 'tie') {
@@ -125,15 +124,35 @@ const sortResults = (gameStats) => {
   return keysSorted;
 };
 
-// Takes in an object of teams with their total points and an array of sorted team names.
+// Returns matchResults with a new rank property starting at 1.
+// If two teams have the same score, they have the same rank.
+const createRank = (matchResults, sortedTeamList) => {
+  let rank = 1;
+  for (let i = 0; i < sortedTeamList.length; i++) {
+    if (i > 0 && matchResults[sortedTeamList[i]].points < matchResults[sortedTeamList[i - 1]].points) {
+      matchResults[sortedTeamList[i]].rank = rank + 1;
+      rank += 1;
+    } else if (i > 0 && matchResults[sortedTeamList[i]].points === matchResults[sortedTeamList[i - 1]].points) {
+      matchResults[sortedTeamList[i]].rank = rank;
+      rank += 1;
+    } else {
+      matchResults[sortedTeamList[i]].rank = rank;
+    };
+  };
+
+  return matchResults;
+};
+
+// Takes in an object of teams with their total points and rank
+// aswell as an array of sorted team names.
 // Returns a list of teams each formatted to meet the expected criteria.
-const formatOutput = (matchResults, teamListSortedByScore) => {
-  const stats = teamListSortedByScore.map((teamName) => {
-    const { points } = matchResults[teamName];
+const formatOutput = (matchResults, sortedTeamList) => {
+  const stats = sortedTeamList.map((teamName) => {
+    const { points, rank } = matchResults[teamName];
     if (points === 1) {
-      return `${3}. ${teamName}, ${points} pt`;
+      return `${rank}. ${teamName}, ${points} pt`;
     }
-    return `${teamListSortedByScore.indexOf(teamName) + 1}. ${teamName}, ${points} pts`;
+    return `${rank}. ${teamName}, ${points} pts`;
   });
 
   // expected-output.txt file contains an extra line at the end.
@@ -147,6 +166,7 @@ module.exports = {
   getListOfTeamNames,
   getTotalTeamPoints,
   retrieveWinnerOrTie,
-  formatOutput,
   sortResults,
+  createRank,
+  formatOutput,
 };
