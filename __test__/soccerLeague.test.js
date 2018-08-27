@@ -158,6 +158,6 @@ it('should add a ranking property to matchResults', () => {
   expect(soccerTest.createRank(matchResultsMock, sortedTeamListMock)).toEqual(matchResultsAndRankMock);
 });
 
-it('should return the the correct output format', () => {
+it('should return the correct output format', () => {
   expect(soccerTest.formatOutput(matchResultsAndRankMock, sortedTeamListMock)).toEqual(expectedOutPutMock.join('\n'));
 });
