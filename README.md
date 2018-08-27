@@ -10,7 +10,7 @@ First install the packages and node modules:
 npm install
 ```
 
-To run this application type either of the two commands into the terminal:
+To run this application run either of the two commands into the terminal:
 
 ```
 cat sample-input.txt | node soccerLeague.js
