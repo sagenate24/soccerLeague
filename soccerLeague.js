@@ -63,7 +63,7 @@ const getListOfTeamNames = (leagueMatches) => {
   return teamList;
 };
 
-// Takes in each team name and an object containg all matches.
+// Takes in each team name and an object containg all game matches.
 // Returns the total points for each team.
 const getTotalTeamPoints = (teamName, leagueMatches) => {
   let score = 0;
@@ -84,7 +84,7 @@ const getTotalTeamPoints = (teamName, leagueMatches) => {
 // Takes in a team name and a match.
 // Returns the team name if the specified team won the match.
 // OR
-// Returns a string 'tie' if each team in the match had the same score.
+// Returns a string 'tie' if both teams had the same score.
 const retrieveWinnerOrTie = (match, teamName) => {
   const teamOneScore = match.teamOne.score;
   const teamTwoScore = match.teamTwo.score;
@@ -107,10 +107,10 @@ const retrieveWinnerOrTie = (match, teamName) => {
   return null;
 };
 
-// Takes in object of teams with their total points.
-// Returns array of team names sorted by their total points.
+// Takes in an object of the teams with their total points.
+// Returns an array of team names sorted by their total points.
 // AND
-// if teams have the same number of points they are sorted in alphabetical order.
+// If teams have the same number of points they are sorted in alphabetical order.
 const sortResults = (gameStats) => {
   const keysSorted = Object.keys(gameStats).sort((a, b) => {
     if (gameStats[b].points > gameStats[a].points) {
@@ -125,8 +125,8 @@ const sortResults = (gameStats) => {
   return keysSorted;
 };
 
-// Takes in object of teams with their total points and an array of sorted team names.
-// Returns a list of teams each fromatted to meet the expected criteria.
+// Takes in an object of teams with their total points and an array of sorted team names.
+// Returns a list of teams each formatted to meet the expected criteria.
 const formatOutput = (matchResults, teamListSortedByScore) => {
   const stats = teamListSortedByScore.map((teamName) => {
     const { points } = matchResults[teamName];
@@ -141,9 +141,9 @@ const formatOutput = (matchResults, teamListSortedByScore) => {
   return stats.join('\n');
 };
 
+// Exporting functions to be tested in __test__ folder.
 module.exports = {
   formatData,
-  logExpectedOutPut,
   getListOfTeamNames,
   getTotalTeamPoints,
   retrieveWinnerOrTie,
